@@ -4,6 +4,10 @@ public class Card {
     private Suite _suite;
     private Rank _rank;
 
+    public static Card joker() {
+        return new Card(Rank.JOKER, Suite.JOKER);
+    }
+
     public Card(Rank rank, Suite suite) {
         _rank = rank;
         _suite = suite;
@@ -18,7 +22,7 @@ public class Card {
     }
 
     public enum Suite {
-        HEART, DIAMOND, CLUB, SPADE
+        HEART, DIAMOND, CLUB, SPADE, JOKER
     }
 
     public enum Rank {
@@ -35,7 +39,8 @@ public class Card {
         JACK(11),
         QUEEN(12),
         KING(13),
-        ACE(14);
+        ACE(14),
+        JOKER(-1);
 
         private int _value;
 
