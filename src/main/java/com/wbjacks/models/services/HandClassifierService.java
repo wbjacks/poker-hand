@@ -26,6 +26,8 @@ public class HandClassifierService {
             return new HandClassification(Classification.FLUSH, highCard);
         } else if (isHandStraight(handRanks)) {
             return new HandClassification(Classification.STRAIGHT, highCard);
+        } else if (isHandThreeOfAKind(handRanks)) {
+            return new HandClassification(Classification.THREE_OF_A_KIND, highCard);
         } else {
             return new HandClassification(HandClassification.Classification.NONE, highCard);
         }
@@ -49,8 +51,8 @@ public class HandClassifierService {
 
     private boolean isHandFiveOfAKind(Map<Card.Rank, Integer> handRanks, Map<Card.Suite, Integer> handSuites) {
         return handSuites.keySet().size() == 5 && handRanks.values().stream().anyMatch(counts -> counts == 4) // 1 joker
-                || handRanks.values().stream().anyMatch(counts -> counts == 3) && handSuites.get(Card.Suite.JOKER) ==
-                2; // 2 joker
+                || handRanks.values().stream().anyMatch(counts -> counts == 3) && handSuites.containsKey(Card.Suite
+                .JOKER) && handSuites.get(Card.Suite.JOKER) == 2; // 2 joker
     }
 
     private boolean isHandStraightFlush(Map<Card.Rank, Integer> handRanks, Map<Card.Suite, Integer> handSuites) {
@@ -58,8 +60,8 @@ public class HandClassifierService {
     }
 
     private boolean isHandStraight(Map<Card.Rank, Integer> handRanks) {
-        int minCardValue = handRanks.keySet().stream().filter(rank -> rank != Card.Rank.JOKER).map(Card
-                .Rank::getValue).min(Integer::compare).get();
+        @SuppressWarnings("OptionalGetWithoutIsPresent") int minCardValue = handRanks.keySet().stream().filter(rank
+                -> rank != Card.Rank.JOKER).map(Card.Rank::getValue).min(Integer::compare).get();
         if (handRanks.containsKey(Card.Rank.ACE)) { // Ace counts as lowest card if you have A 1 2 3 4 5
             minCardValue = 0;
         }
@@ -81,5 +83,10 @@ public class HandClassifierService {
     private boolean isHandFlush(Map<Card.Suite, Integer> handSuites) {
         int numberOfJokers = handSuites.containsKey(Card.Suite.JOKER) ? handSuites.get(Card.Suite.JOKER) : 0;
         return handSuites.values().stream().anyMatch(count -> count + numberOfJokers >= 5);
+    }
+
+    private boolean isHandThreeOfAKind(Map<Card.Rank, Integer> handRanks) {
+        int numberOfJokers = handRanks.containsKey(Card.Rank.JOKER) ? handRanks.get(Card.Rank.JOKER) : 0;
+        return handRanks.values().stream().anyMatch(count -> count + numberOfJokers >= 3);
     }
 }

@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
+@SuppressWarnings("unchecked") // Raw ArrayList required for DBI
 public class HandClassifierServiceTest {
     @Test
     public void fiveOfAKindOneJokerIsClassified() throws Hand.TooManyCardsException, Hand.IncompleteHandException {
@@ -213,14 +214,45 @@ public class HandClassifierServiceTest {
     }
 
     @Test
-    @Ignore
     public void threeOfAKindIsClassified() throws Hand.TooManyCardsException, Hand.IncompleteHandException {
         Hand hand = new Hand(new ArrayList() {{
-
+            add(new Card(Rank.QUEEN, Suite.CLUB));
+            add(new Card(Rank.QUEEN, Suite.SPADE));
+            add(new Card(Rank.QUEEN, Suite.HEART));
+            add(new Card(Rank.NINE, Suite.HEART));
+            add(new Card(Rank.TWO, Suite.SPADE));
         }});
         HandClassification handClassification = new HandClassifierService().classifyHand(hand);
-        assertEquals(Classification.FIVE_OF_A_KIND, handClassification.getClassification());
-        assertEquals(Rank.KING, handClassification.getHighCard());
+        assertEquals(Classification.THREE_OF_A_KIND, handClassification.getClassification());
+        assertEquals(Rank.QUEEN, handClassification.getHighCard());
+    }
+
+    @Test
+    public void threeOfAKindOneJokerIsClassified() throws Hand.TooManyCardsException, Hand.IncompleteHandException {
+        Hand hand = new Hand(new ArrayList() {{
+            add(new Card(Rank.QUEEN, Suite.CLUB));
+            add(Card.joker());
+            add(new Card(Rank.QUEEN, Suite.HEART));
+            add(new Card(Rank.NINE, Suite.HEART));
+            add(new Card(Rank.TWO, Suite.SPADE));
+        }});
+        HandClassification handClassification = new HandClassifierService().classifyHand(hand);
+        assertEquals(Classification.THREE_OF_A_KIND, handClassification.getClassification());
+        assertEquals(Rank.QUEEN, handClassification.getHighCard());
+    }
+
+    @Test
+    public void threeOfAKindTwoJokersIsClassified() throws Hand.TooManyCardsException, Hand.IncompleteHandException {
+        Hand hand = new Hand(new ArrayList() {{
+            add(new Card(Rank.QUEEN, Suite.CLUB));
+            add(Card.joker());
+            add(Card.joker());
+            add(new Card(Rank.NINE, Suite.HEART));
+            add(new Card(Rank.TWO, Suite.SPADE));
+        }});
+        HandClassification handClassification = new HandClassifierService().classifyHand(hand);
+        assertEquals(Classification.THREE_OF_A_KIND, handClassification.getClassification());
+        assertEquals(Rank.QUEEN, handClassification.getHighCard());
     }
 
     @Test
