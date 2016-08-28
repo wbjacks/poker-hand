@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Hand implements Comparable<Hand> {
+public class Hand {
     public static final int NUMBER_OF_CARDS_IN_COMPLETE_HAND = 5;
     private final List<Card> _cards = new ArrayList<>();
     private HandClassification _handClassification;
@@ -34,31 +34,6 @@ public class Hand implements Comparable<Hand> {
 
     public void setHandClassification(HandClassification handClassification) {
         _handClassification = handClassification;
-    }
-
-    @Override
-    public int compareTo(Hand hand) {
-        int classificationCompareValue = Integer.compare(this.getHandClassification().getClassification().getValue(),
-                hand.getHandClassification().getClassification().getValue());
-        if (classificationCompareValue == 0) {
-            // Tie, compare highest cards
-            try {
-                List<Integer> thisValueRankings = this.getCards().stream().map(card -> card.getRank().getValue())
-                        .sorted().collect(Collectors.toList());
-                List<Integer> thatValueRankings = hand.getCards().stream().map(card -> card.getRank().getValue())
-                        .sorted().collect(Collectors.toList());
-                for (Integer thisValue : thisValueRankings) {
-                    int compareValue = Integer.compare(thisValue, thatValueRankings.remove(0));
-                    if (compareValue != 0) {
-                        return compareValue;
-                    }
-                }
-                return 0;
-            } catch (IncompleteHandException e) {
-                return 0; // TODO: (wbjacks) Log error
-            }
-        }
-        return classificationCompareValue;
     }
 
     public static class TooManyCardsException extends Exception {

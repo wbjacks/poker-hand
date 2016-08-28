@@ -5,6 +5,7 @@ import com.wbjacks.models.Card.Rank;
 import com.wbjacks.models.Card.Suite;
 import com.wbjacks.models.Hand;
 import com.wbjacks.models.services.HandClassifierService;
+import com.wbjacks.models.services.WinDecisionService;
 
 import java.util.ArrayList;
 
@@ -25,23 +26,15 @@ public class App {
                 add(new Card(Rank.KING, Suite.CLUB));
                 add(new Card(Rank.KING, Suite.HEART));
             }});
-
-            HandClassifierService handClassifierService = new HandClassifierService();
-            hand1.setHandClassification(handClassifierService.classifyHand(hand1));
-            hand2.setHandClassification(handClassifierService.classifyHand(hand2));
-
-            // This is awful
-            if (hand1.compareTo(hand2) == 1) {
-                System.out.println("Hand 1 wins!");
-            }
-            else if (hand1.compareTo(hand2) == -1) {
-                System.out.println("Hand 2 wins!");
-            }
-            else if (hand1.compareTo(hand2) == 0) {
-                System.out.println("They tie");
-            }
+            WinDecisionService winDecisionService = new WinDecisionService(new HandClassifierService());
+            System.out.println(String.format("Hand1 %ss!", winDecisionService.decideVictory(hand1, hand2)));
         }
-        catch (Hand.TooManyCardsException ignored) {}
-        catch (Hand.IncompleteHandException ignored) {}
+        catch (Hand.TooManyCardsException ignored) {
+            System.out.println("Too many cards in hand.");
+        }
+
+        catch (Hand.IncompleteHandException ignored) {
+            System.out.println("Can't classify incomplete hand.");
+        }
     }
 }
