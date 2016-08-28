@@ -3,6 +3,7 @@ package com.wbjacks.models.services;
 import com.wbjacks.models.Card;
 import com.wbjacks.models.Hand;
 import com.wbjacks.models.HandClassification;
+import com.wbjacks.models.HandClassification.Classification;
 
 import java.util.Map;
 import java.util.function.Function;
@@ -18,7 +19,13 @@ public class HandClassifierService {
         Card.Rank highCard = getHighCard(handRanks);
 
         if (isHandFiveOfAKind(handRanks, handSuites)) {
-            return new HandClassification(HandClassification.Classification.FIVE_OF_A_KIND, highCard);
+            return new HandClassification(Classification.FIVE_OF_A_KIND, highCard);
+        } else if (isHandStraightFlush(handRanks, handSuites)) {
+            return new HandClassification(Classification.STRAIGHT_FLUSH, highCard);
+        } else if (isHandFlush(handSuites)) {
+            return new HandClassification(Classification.FLUSH, highCard);
+        } else if (isHandStraight(handRanks)) {
+            return new HandClassification(Classification.STRAIGHT, highCard);
         } else {
             return new HandClassification(HandClassification.Classification.NONE, highCard);
         }
@@ -44,5 +51,35 @@ public class HandClassifierService {
         return handSuites.keySet().size() == 5 && handRanks.values().stream().anyMatch(counts -> counts == 4) // 1 joker
                 || handRanks.values().stream().anyMatch(counts -> counts == 3) && handSuites.get(Card.Suite.JOKER) ==
                 2; // 2 joker
+    }
+
+    private boolean isHandStraightFlush(Map<Card.Rank, Integer> handRanks, Map<Card.Suite, Integer> handSuites) {
+        return isHandStraight(handRanks) && isHandFlush(handSuites);
+    }
+
+    private boolean isHandStraight(Map<Card.Rank, Integer> handRanks) {
+        int minCardValue = handRanks.keySet().stream().filter(rank -> rank != Card.Rank.JOKER).map(Card
+                .Rank::getValue).min(Integer::compare).get();
+        if (handRanks.containsKey(Card.Rank.ACE)) { // Ace counts as lowest card if you have A 1 2 3 4 5
+            minCardValue = 0;
+        }
+        for (int i = 1, jokersUsed = 0; i < Hand.NUMBER_OF_CARDS_IN_COMPLETE_HAND; i++) {
+            if (!handRanks.containsKey(Card.Rank.getForValue(minCardValue + i).orElse(null))) {
+                // If the card value for the straight exists but isn't present and we have a joker, use the joker
+                // instead
+                if (minCardValue + i <= Card.Rank.ACE.getValue() && handRanks.containsKey(Card.Rank.JOKER) &&
+                        jokersUsed < handRanks.get(Card.Rank.JOKER)) {
+                    jokersUsed++;
+                } else {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    private boolean isHandFlush(Map<Card.Suite, Integer> handSuites) {
+        int numberOfJokers = handSuites.containsKey(Card.Suite.JOKER) ? handSuites.get(Card.Suite.JOKER) : 0;
+        return handSuites.values().stream().anyMatch(count -> count + numberOfJokers >= 5);
     }
 }

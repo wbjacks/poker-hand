@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Hand {
-    private static final int NUMBER_OF_CARDS_IN_COMPLETE_HAND = 5;
+    public static final int NUMBER_OF_CARDS_IN_COMPLETE_HAND = 5;
     private final List<Card> _cards = new ArrayList<>();
 
     // TODO: (wbjacks) assert maximum size?

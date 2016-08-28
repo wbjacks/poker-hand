@@ -1,5 +1,8 @@
 package com.wbjacks.models;
 
+import java.util.Arrays;
+import java.util.Optional;
+
 public class Card {
     private Suite _suite;
     private Rank _rank;
@@ -50,6 +53,10 @@ public class Card {
 
         public int getValue() {
             return _value;
+        }
+
+        public static Optional<Rank> getForValue(int value) {
+            return Arrays.stream(Rank.values()).filter(rank -> rank.getValue() == value).findFirst();
         }
     }
 }
