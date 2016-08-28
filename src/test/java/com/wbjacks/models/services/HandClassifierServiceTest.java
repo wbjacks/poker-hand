@@ -102,24 +102,30 @@ public class HandClassifierServiceTest {
     }
 
     @Test
-    @Ignore
     public void fourOfAKindIsClassified() throws Hand.TooManyCardsException, Hand.IncompleteHandException {
         Hand hand = new Hand(new ArrayList() {{
-
+            add(new Card(Rank.TWO, Suite.HEART));
+            add(new Card(Rank.TWO, Suite.DIAMOND));
+            add(new Card(Rank.TWO, Suite.DIAMOND));
+            add(new Card(Rank.TWO, Suite.SPADE));
+            add(new Card(Rank.THREE, Suite.SPADE));
         }});
         HandClassification handClassification = new HandClassifierService().classifyHand(hand);
-        assertEquals(Classification.FIVE_OF_A_KIND, handClassification.getClassification());
-        assertEquals(Rank.KING, handClassification.getHighCard());
+        assertEquals(Classification.FOUR_OF_A_KIND, handClassification.getClassification());
+        assertEquals(Rank.THREE, handClassification.getHighCard());
     }
 
     @Test
-    @Ignore
     public void fullHouseIsClassified() throws Hand.TooManyCardsException, Hand.IncompleteHandException {
         Hand hand = new Hand(new ArrayList() {{
-
+            add(new Card(Rank.SIX, Suite.SPADE));
+            add(new Card(Rank.SIX, Suite.HEART));
+            add(new Card(Rank.SIX, Suite.DIAMOND));
+            add(new Card(Rank.KING, Suite.CLUB));
+            add(new Card(Rank.KING, Suite.HEART));
         }});
         HandClassification handClassification = new HandClassifierService().classifyHand(hand);
-        assertEquals(Classification.FIVE_OF_A_KIND, handClassification.getClassification());
+        assertEquals(Classification.FULL_HOUSE, handClassification.getClassification());
         assertEquals(Rank.KING, handClassification.getHighCard());
     }
 
@@ -256,25 +262,33 @@ public class HandClassifierServiceTest {
     }
 
     @Test
-    @Ignore
     public void twoPairIsClassified() throws Hand.TooManyCardsException, Hand.IncompleteHandException {
         Hand hand = new Hand(new ArrayList() {{
+            add(new Card(Rank.TEN, Suite.CLUB));
+            add(new Card(Rank.QUEEN, Suite.HEART));
+            add(new Card(Rank.QUEEN, Suite.HEART));
+            add(new Card(Rank.TEN, Suite.SPADE));
+            add(new Card(Rank.THREE, Suite.DIAMOND));
 
         }});
         HandClassification handClassification = new HandClassifierService().classifyHand(hand);
-        assertEquals(Classification.FIVE_OF_A_KIND, handClassification.getClassification());
-        assertEquals(Rank.KING, handClassification.getHighCard());
+        assertEquals(Classification.TWO_PAIR, handClassification.getClassification());
+        assertEquals(Rank.QUEEN, handClassification.getHighCard());
     }
 
     @Test
-    @Ignore
     public void onePairIsClassified() throws Hand.TooManyCardsException, Hand.IncompleteHandException {
         Hand hand = new Hand(new ArrayList() {{
+            add(new Card(Rank.TEN, Suite.CLUB));
+            add(new Card(Rank.TEN, Suite.HEART));
+            add(new Card(Rank.QUEEN, Suite.HEART));
+            add(new Card(Rank.JACK, Suite.SPADE));
+            add(new Card(Rank.THREE, Suite.DIAMOND));
 
         }});
         HandClassification handClassification = new HandClassifierService().classifyHand(hand);
-        assertEquals(Classification.FIVE_OF_A_KIND, handClassification.getClassification());
-        assertEquals(Rank.KING, handClassification.getHighCard());
+        assertEquals(Classification.ONE_PAIR, handClassification.getClassification());
+        assertEquals(Rank.QUEEN, handClassification.getHighCard());
     }
 
     @Test

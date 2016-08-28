@@ -5,6 +5,7 @@ import com.wbjacks.models.Hand;
 import com.wbjacks.models.HandClassification;
 import com.wbjacks.models.HandClassification.Classification;
 
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -25,6 +26,8 @@ public class HandClassifierService {
             return new HandClassification(Classification.STRAIGHT_FLUSH, highCard);
         } else if (isHandFourOfAKind(handRanks)) {
             return new HandClassification(Classification.FOUR_OF_A_KIND, highCard);
+        } else if (isHandFullHouse(handRanks)) {
+            return new HandClassification(Classification.FULL_HOUSE, highCard);
         } else if (isHandFlush(handSuites)) {
             return new HandClassification(Classification.FLUSH, highCard);
         } else if (isHandStraight(handRanks)) {
@@ -90,6 +93,12 @@ public class HandClassifierService {
     private boolean isHandFlush(Map<Card.Suite, Integer> handSuites) {
         int numberOfJokers = handSuites.containsKey(Card.Suite.JOKER) ? handSuites.get(Card.Suite.JOKER) : 0;
         return handSuites.values().stream().anyMatch(count -> count + numberOfJokers >= 5);
+    }
+
+    private boolean isHandFullHouse(Map<Card.Rank, Integer> handRanks) {
+        int numberOfJokers = handRanks.containsKey(Card.Rank.JOKER) ? handRanks.get(Card.Rank.JOKER) : 0;
+        List<Integer> rankCountsExcludingJokers = handRanks.entrySet().stream().filter(rankCount -> rankCount.getKey() != Card.Rank.JOKER).map(Map.Entry::getValue).collect(Collectors.toList());
+        return rankCountsExcludingJokers.size() == 2; // The only other combination is 4-1, which is four-of-a-kind
     }
 
     private boolean isHandFourOfAKind(Map<Card.Rank, Integer> handRanks) {
