@@ -97,8 +97,11 @@ public class HandClassifierService {
 
     private boolean isHandFullHouse(Map<Card.Rank, Integer> handRanks) {
         int numberOfJokers = handRanks.containsKey(Card.Rank.JOKER) ? handRanks.get(Card.Rank.JOKER) : 0;
-        List<Integer> rankCountsExcludingJokers = handRanks.entrySet().stream().filter(rankCount -> rankCount.getKey() != Card.Rank.JOKER).map(Map.Entry::getValue).collect(Collectors.toList());
-        return rankCountsExcludingJokers.size() == 2; // The only other combination is 4-1, which is four-of-a-kind
+        List<Integer> rankCountsExcludingJokers = handRanks.entrySet().stream().filter(rankCount -> rankCount.getKey
+                () != Card.Rank.JOKER).map(Map.Entry::getValue).collect(Collectors.toList());
+        // We only need to check that two ranks exist: the only other combination of two ranks is 4-1, which is
+        // four-of-a-kind. With jokers, if there is only a single rank left of 3, then the hand is 5-of-a-kind
+        return rankCountsExcludingJokers.size() == 2;
     }
 
     private boolean isHandFourOfAKind(Map<Card.Rank, Integer> handRanks) {
@@ -110,9 +113,10 @@ public class HandClassifierService {
     }
 
     private boolean isHandTwoPair(Map<Card.Rank, Integer> handRanks) {
-        int numberOfJokers = handRanks.containsKey(Card.Rank.JOKER) ? handRanks.get(Card.Rank.JOKER) : 0;
+        // Can only use one joker, as 2 will also win with 3 of a kind. Only needs one actual pair if you have a joker.
         return handRanks.entrySet().stream().filter(rankCount -> rankCount.getKey() != Card.Rank.JOKER).map(Map
-                .Entry::getValue).filter(count -> count + numberOfJokers >= 2).count() >= 2;
+                .Entry::getValue).filter(count -> count >= 2).count() >= (handRanks.containsKey(Card.Rank.JOKER) ? 1
+                : 2);
     }
 
     private boolean isHandPair(Map<Card.Rank, Integer> handRanks) {
