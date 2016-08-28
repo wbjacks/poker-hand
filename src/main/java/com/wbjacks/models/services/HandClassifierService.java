@@ -17,17 +17,24 @@ public class HandClassifierService {
         Map<Card.Rank, Integer> handRanks = getHandRankCounts(hand);
         Map<Card.Suite, Integer> handSuites = getHandSuiteCounts(hand);
         Card.Rank highCard = getHighCard(handRanks);
+        // TODO: (wbjacks) Check hand validity?
 
         if (isHandFiveOfAKind(handRanks, handSuites)) {
             return new HandClassification(Classification.FIVE_OF_A_KIND, highCard);
         } else if (isHandStraightFlush(handRanks, handSuites)) {
             return new HandClassification(Classification.STRAIGHT_FLUSH, highCard);
+        } else if (isHandFourOfAKind(handRanks)) {
+            return new HandClassification(Classification.FOUR_OF_A_KIND, highCard);
         } else if (isHandFlush(handSuites)) {
             return new HandClassification(Classification.FLUSH, highCard);
         } else if (isHandStraight(handRanks)) {
             return new HandClassification(Classification.STRAIGHT, highCard);
         } else if (isHandThreeOfAKind(handRanks)) {
             return new HandClassification(Classification.THREE_OF_A_KIND, highCard);
+        } else if (isHandTwoPair(handRanks)) {
+            return new HandClassification(Classification.TWO_PAIR, highCard);
+        } else if (isHandPair(handRanks)) {
+            return new HandClassification(Classification.ONE_PAIR, highCard);
         } else {
             return new HandClassification(HandClassification.Classification.NONE, highCard);
         }
@@ -85,8 +92,28 @@ public class HandClassifierService {
         return handSuites.values().stream().anyMatch(count -> count + numberOfJokers >= 5);
     }
 
+    private boolean isHandFourOfAKind(Map<Card.Rank, Integer> handRanks) {
+        return checkNOfAKind(4, handRanks);
+    }
+
     private boolean isHandThreeOfAKind(Map<Card.Rank, Integer> handRanks) {
+        return checkNOfAKind(3, handRanks);
+    }
+
+    private boolean isHandTwoPair(Map<Card.Rank, Integer> handRanks) {
         int numberOfJokers = handRanks.containsKey(Card.Rank.JOKER) ? handRanks.get(Card.Rank.JOKER) : 0;
-        return handRanks.values().stream().anyMatch(count -> count + numberOfJokers >= 3);
+        return handRanks.entrySet().stream().filter(rankCount -> rankCount.getKey() != Card.Rank.JOKER).map(Map
+                .Entry::getValue).filter(count -> count + numberOfJokers >= 2).count() >= 2;
+    }
+
+    private boolean isHandPair(Map<Card.Rank, Integer> handRanks) {
+        return checkNOfAKind(2, handRanks);
+    }
+
+    private boolean checkNOfAKind(int n, Map<Card.Rank, Integer> handRanks) {
+        int numberOfJokers = handRanks.containsKey(Card.Rank.JOKER) ? handRanks.get(Card.Rank.JOKER) : 0;
+        return handRanks.entrySet().stream().filter(rankCount -> rankCount.getKey() != Card.Rank.JOKER).map(Map
+                .Entry::getValue).anyMatch(count -> count + numberOfJokers >= n);
+
     }
 }
