@@ -22,18 +22,7 @@ public class WinDecisionService {
             return Decision.LOSE;
         }
         else {
-            // Tie, compare highest cards
-            List<Integer> thisValueRankings = hand1.getCards().stream().map(card -> card.getRank().getValue()).sorted().collect(Collectors.toList());
-            List<Integer> thatValueRankings = hand2.getCards().stream().map(card -> card.getRank().getValue()).sorted().collect(Collectors.toList());
-            for (Integer thisValue : thisValueRankings) {
-                Integer thatValue = thatValueRankings.remove(0);
-                if (thisValue > thatValue) {
-                    return Decision.WIN;
-                } else if (thisValue < thatValue) {
-                    return Decision.LOSE;
-                }
-            }
-            return Decision.TIE;
+            return Decision.TIE; // NOTE: See README with information on ties
         }
     }
 

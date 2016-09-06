@@ -96,7 +96,6 @@ public class HandClassifierService {
     }
 
     private boolean isHandFullHouse(Map<Card.Rank, Integer> handRanks) {
-        int numberOfJokers = handRanks.containsKey(Card.Rank.JOKER) ? handRanks.get(Card.Rank.JOKER) : 0;
         List<Integer> rankCountsExcludingJokers = handRanks.entrySet().stream().filter(rankCount -> rankCount.getKey
                 () != Card.Rank.JOKER).map(Map.Entry::getValue).collect(Collectors.toList());
         // We only need to check that two ranks exist: the only other combination of two ranks is 4-1, which is
