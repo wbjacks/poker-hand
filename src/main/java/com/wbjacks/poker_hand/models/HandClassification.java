@@ -1,4 +1,4 @@
-package com.wbjacks.models;
+package com.wbjacks.poker_hand.models;
 
 public class HandClassification {
     private Classification _classification;

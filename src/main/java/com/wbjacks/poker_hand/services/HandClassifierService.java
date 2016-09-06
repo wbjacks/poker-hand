@@ -1,9 +1,9 @@
-package com.wbjacks.models.services;
+package com.wbjacks.poker_hand.services;
 
-import com.wbjacks.models.Card;
-import com.wbjacks.models.Hand;
-import com.wbjacks.models.HandClassification;
-import com.wbjacks.models.HandClassification.Classification;
+import com.wbjacks.poker_hand.models.Card;
+import com.wbjacks.poker_hand.models.Hand;
+import com.wbjacks.poker_hand.models.HandClassification;
+import com.wbjacks.poker_hand.models.HandClassification.Classification;
 
 import java.util.List;
 import java.util.Map;

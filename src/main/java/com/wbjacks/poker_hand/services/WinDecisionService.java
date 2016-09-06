@@ -1,9 +1,6 @@
-package com.wbjacks.models.services;
+package com.wbjacks.poker_hand.services;
 
-import com.wbjacks.models.Hand;
-
-import java.util.List;
-import java.util.stream.Collectors;
+import com.wbjacks.poker_hand.models.Hand;
 
 public class WinDecisionService {
     private HandClassifierService _handClassifierService;

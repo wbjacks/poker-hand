@@ -12,7 +12,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <main.class>com.wbjacks.App</main.class>
+        <main.class>com.wbjacks.poker_hand.App</main.class>
     </properties>
 
     <build>

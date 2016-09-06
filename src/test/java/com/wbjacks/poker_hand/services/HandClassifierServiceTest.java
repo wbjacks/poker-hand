@@ -1,13 +1,13 @@
 // Thanks to https://en.wikipedia.org/wiki/List_of_poker_hand_categories for the easy examples for testing
 
-package com.wbjacks.models.services;
+package com.wbjacks.poker_hand.services;
 
-import com.wbjacks.models.Card;
-import com.wbjacks.models.Card.Rank;
-import com.wbjacks.models.Card.Suite;
-import com.wbjacks.models.Hand;
-import com.wbjacks.models.HandClassification;
-import com.wbjacks.models.HandClassification.Classification;
+import com.wbjacks.poker_hand.models.Card;
+import com.wbjacks.poker_hand.models.Card.Rank;
+import com.wbjacks.poker_hand.models.Card.Suite;
+import com.wbjacks.poker_hand.models.Hand;
+import com.wbjacks.poker_hand.models.HandClassification;
+import com.wbjacks.poker_hand.models.HandClassification.Classification;
 import org.junit.Test;
 
 import java.util.ArrayList;

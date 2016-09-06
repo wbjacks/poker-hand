@@ -1,4 +1,4 @@
-package com.wbjacks.models;
+package com.wbjacks.poker_hand.models;
 
 import java.util.Arrays;
 import java.util.Optional;

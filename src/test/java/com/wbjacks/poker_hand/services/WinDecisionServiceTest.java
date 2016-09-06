@@ -1,13 +1,13 @@
-package com.wbjacks.models.services;
+package com.wbjacks.poker_hand.services;
 
-import com.wbjacks.models.Card;
-import com.wbjacks.models.Hand;
+import com.wbjacks.poker_hand.models.Card;
+import com.wbjacks.poker_hand.models.Hand;
 import org.junit.Test;
 
 import java.util.ArrayList;
 
-import static com.wbjacks.models.Card.Rank;
-import static com.wbjacks.models.Card.Suite;
+import static com.wbjacks.poker_hand.models.Card.Rank;
+import static com.wbjacks.poker_hand.models.Card.Suite;
 import static org.junit.Assert.assertEquals;
 
 public class WinDecisionServiceTest {

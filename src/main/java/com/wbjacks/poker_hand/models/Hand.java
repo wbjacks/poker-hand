@@ -1,8 +1,7 @@
-package com.wbjacks.models;
+package com.wbjacks.poker_hand.models;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Hand {
     public static final int NUMBER_OF_CARDS_IN_COMPLETE_HAND = 5;

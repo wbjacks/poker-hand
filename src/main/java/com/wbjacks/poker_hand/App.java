@@ -1,11 +1,11 @@
-package com.wbjacks;
+package com.wbjacks.poker_hand;
 
-import com.wbjacks.models.Card;
-import com.wbjacks.models.Card.Rank;
-import com.wbjacks.models.Card.Suite;
-import com.wbjacks.models.Hand;
-import com.wbjacks.models.services.HandClassifierService;
-import com.wbjacks.models.services.WinDecisionService;
+import com.wbjacks.poker_hand.models.Card;
+import com.wbjacks.poker_hand.models.Card.Rank;
+import com.wbjacks.poker_hand.models.Card.Suite;
+import com.wbjacks.poker_hand.models.Hand;
+import com.wbjacks.poker_hand.services.HandClassifierService;
+import com.wbjacks.poker_hand.services.WinDecisionService;
 
 import java.util.ArrayList;
 
